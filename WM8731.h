@@ -4,7 +4,7 @@
 ############
 Device            : WM8731 Audio CODEC
 Author            : Sahand Kashani-Akhavan / Philémon Favrod
-Revision          : 1.0
+Revision          : 1.1
 Modification date : 25/05/2015
 */
 
@@ -12,10 +12,10 @@ Modification date : 25/05/2015
 #define WM8731_H
 
 #include <stdbool.h>
-#include "alt_types.h"
+#include <stdint.h>
 
 // Calculates log2 of a number. Attention: the number must be a power of 2
-static alt_u16 DE1_SOC_WM8731_log2(alt_u16 power_of_2) {
+static uint16_t DE1_SOC_WM8731_log2(uint16_t power_of_2) {
     if      (power_of_2 == 0x0001) return 0;
     else if (power_of_2 == 0x0002) return 1;
     else if (power_of_2 == 0x0004) return 2;
@@ -34,20 +34,20 @@ static alt_u16 DE1_SOC_WM8731_log2(alt_u16 power_of_2) {
     else                           return 15;
 }
 
-static alt_u16 DE1_SOC_WM8731_shift_amount(alt_u16 mask) {
+static uint16_t DE1_SOC_WM8731_shift_amount(uint16_t mask) {
     // (mask & -mask) clears all but the lowest bit of x
     return DE1_SOC_WM8731_log2(mask & (~mask + 1));
 }
 
-alt_u8 DE1_SOC_WM8731_REG_ADDRESS(alt_u8 addr, alt_u16 data) {
+uint8_t DE1_SOC_WM8731_REG_ADDRESS(uint8_t addr, uint16_t data) {
     return (addr << 1) | ((data >> 8) & 0x1);
 }
 
-alt_u8 DE1_SOC_WM8731_REG_DATA(alt_u16 data) {
+uint8_t DE1_SOC_WM8731_REG_DATA(uint16_t data) {
     return (data & 0xff);
 }
 
-static alt_u16 DE1_SOC_WM8731_WRITE(alt_u16 write_value, alt_u16 mask) {
+static uint16_t DE1_SOC_WM8731_WRITE(uint16_t write_value, uint16_t mask) {
     return mask & (write_value << DE1_SOC_WM8731_shift_amount(mask));
 }
 
